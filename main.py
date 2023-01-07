@@ -57,23 +57,27 @@ def list_to_staff(song_bank_list: list):
 
 # Take the random list of chords and make it into a song list with beats
 def build_song_from_chords(chord_list: list):
+    # Create the song bank and populate with empty beats
     song_bank = []
     for note_c in range(NUM_SONG_NOTES):
         song_bank.append(' -   ') # Use a dash in place of a rest
 
+    # Generate a list of random beats for the chords to fall on
+    beat_sched = []
+    for rand_c in range(len(chord_list)):
+        rand_beat = random.randint(1, NUM_SONG_NOTES)
+        while rand_beat in beat_sched:
+            rand_beat = random.randint(1, NUM_SONG_NOTES)
+        beat_sched.append(rand_beat)
+    beat_sched.sort()
+    # Make sure there's a chord in the first measure
+    if not (beat_sched[0] < TIME_SIGNATURE_NUM):
+            beat_sched[0] = random.randint(1, TIME_SIGNATURE_NUM)
 
-    beat_c = 0 # Counter to keep track of which beat we're on
-    for chord_c in range(len(chord_list)):
-        chords_remaining = len(chord_list) - chord_c
-        beats_remaining = NUM_SONG_NOTES - beat_c # Calc how many beats are left in the song
-        beats_remaining_for_chord = beats_remaining - chords_remaining # Calc number of beats but leave room for remaining chords
-        
-        chord_beat = random.randrange(beat_c, beat_c + beats_remaining_for_chord)
+    # Replace rests in the song bank with chords from the random chord list
+    for chord_c in range(len(chord_list)):    
+        song_bank[beat_sched[chord_c] - 1] = format_string(chord_list[chord_c], 5)
 
-        if not chord_c:
-            chord_beat = random.randint(1, TIME_SIGNATURE_NUM) # Make sure there's a chord in the first measure
-        song_bank[chord_beat] = format_string(chord_list[chord_c], 5)
-        beat_c = chord_beat + 1
     return song_bank
 
 
@@ -82,6 +86,7 @@ def main():
     print("Activated...")
     random.seed()
 
+    # Generate the primary list of random chords
     num_chords = random.randint(1, NUM_MEASURES*(round(TIME_SIGNATURE_NUM / 2)))
     rand_chords = return_rand_chords(num_chords)
 
