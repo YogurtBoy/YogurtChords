@@ -1,0 +1,11 @@
+todotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodo
+
+Create graphics
+    - Render output to window
+    - Make globals into input boxes
+
+Make song type modifiers
+    - 2-5-1, 3-2-1, etc. 
+    - Funk (no 7 chords?)
+    - Jazz; try and find statistics on chord types
+
